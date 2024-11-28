@@ -8,7 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class MemberService { // 비즈니스에 가까운 용어로 쓰기(비즈니스에 의존적)
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+    // DI -> 매번 새롭게 repository를 만들면 서로 다른 저장소를 사용하게 되므로 하나만 만들어서 사용하는 것이 맞다.
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
+
     // 회원 가입
     public Long join(Member member){
         // 중복 회원 검증
@@ -21,7 +27,7 @@ public class MemberService { // 비즈니스에 가까운 용어로 쓰기(비�
     private void validateDulplicateMember(Member member) {
         memberRepository.findByName(member.getName())
                 .ifPresent(m -> {
-                    throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
 
