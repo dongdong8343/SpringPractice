@@ -3,13 +3,17 @@ package hello.hello_spring.service;
 import hello.hello_spring.domain.Member;
 import hello.hello_spring.repository.MemberRepository;
 import hello.hello_spring.repository.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service // 스프링 빈에 서비스 등록해줌.
 public class MemberService { // 비즈니스에 가까운 용어로 쓰기(비즈니스에 의존적)
     private final MemberRepository memberRepository;
     // DI -> 매번 새롭게 repository를 만들면 서로 다른 저장소를 사용하게 되므로 하나만 만들어서 사용하는 것이 맞다.
+    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
